@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>สั่งโยเกิร์ต 🍦</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #ff6eb4; --orange: #fb923c; --purple: #a855f7;
+  --yellow: #fbbf24; --dark: #1a0a2e; --price: 39;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Prompt',sans-serif; background:#0d0118; color:white; min-height:100vh; overflow-x:hidden; }
+
+.blob { position:fixed; border-radius:50%; filter:blur(90px); opacity:0.25; pointer-events:none; z-index:0; }
+.b1 { width:450px;height:450px;background:var(--pink);top:-120px;left:-120px;animation:fb 9s ease-in-out infinite; }
+.b2 { width:380px;height:380px;background:var(--purple);bottom:-100px;right:-100px;animation:fb 7s ease-in-out infinite reverse; }
+.b3 { width:280px;height:280px;background:var(--orange);top:50%;left:50%;animation:fb3 11s ease-in-out infinite 2s; }
+@keyframes fb { 0%,100%{transform:translate(0,0);} 50%{transform:translate(20px,-20px);} }
+@keyframes fb3 { 0%,100%{transform:translate(-50%,-50%);} 50%{transform:translate(calc(-50% + 20px),calc(-50% - 20px));} }
+
+.wrap { position:relative; z-index:1; max-width:440px; margin:0 auto; padding:32px 16px 130px; }
+
+/* Header */
+.header { text-align:center; margin-bottom:36px; animation:slideDown 0.6s ease both; }
+.logo-bowl { display:block; margin:0 auto 16px; width:130px; height:130px; filter:drop-shadow(0 16px 40px rgba(255,110,180,0.45)); animation:bobble 3.5s ease-in-out infinite; }
+@keyframes bobble { 0%,100%{transform:translateY(0) rotate(-2deg);} 50%{transform:translateY(-12px) rotate(2deg);} }
+.shop-name { font-size:36px; font-weight:900; background:linear-gradient(135deg,#fff 30%,var(--pink)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.shop-sub { font-size:13px; color:rgba(255,255,255,0.5); letter-spacing:2px; margin-top:6px; }
+
+.sec-title { font-size:12px; font-weight:700; color:rgba(255,255,255,0.4); letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
+
+/* Flavor cards */
+.flavors { display:flex; flex-direction:column; gap:14px; margin-bottom:24px; }
+
+.flavor-card {
+  background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.09);
+  border-radius:22px; padding:18px 20px;
+  display:flex; align-items:center; gap:14px;
+  transition:all 0.25s ease; cursor:pointer;
+  animation:slideUp 0.5s ease both;
+}
+.flavor-card:nth-child(1){ animation-delay:0.1s; }
+.flavor-card:nth-child(2){ animation-delay:0.2s; }
+.flavor-card.selected { border-color:var(--pink); background:rgba(255,110,180,0.1); box-shadow:0 0 0 3px rgba(255,110,180,0.15); }
+
+.flavor-icon { font-size:38px; flex-shrink:0; }
+.flavor-info { flex:1; }
+.flavor-name { font-size:19px; font-weight:700; }
+.flavor-price { font-size:13px; color:rgba(255,255,255,0.45); margin-top:2px; }
+
+.qty-picker { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+.qty-btn {
+  width:38px; height:38px; border-radius:50%; border:none; cursor:pointer;
+  font-size:22px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  transition:all 0.15s ease; line-height:1;
+}
+.qty-btn.minus { background:rgba(255,255,255,0.1); color:white; }
+.qty-btn.minus:active { transform:scale(0.88); }
+.qty-btn.plus { background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; box-shadow:0 4px 14px rgba(255,110,180,0.35); }
+.qty-btn.plus:active { transform:scale(0.88); }
+.qty-num { font-size:22px; font-weight:700; min-width:28px; text-align:center; }
+
+/* Note */
+.note-wrap { margin-bottom:20px; animation:slideUp 0.5s 0.3s ease both; }
+.note-input {
+  width:100%; background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.09);
+  border-radius:16px; padding:14px 18px; color:white;
+  font-family:'Prompt',sans-serif; font-size:14px; resize:none; outline:none; transition:border-color 0.2s;
+}
+.note-input::placeholder { color:rgba(255,255,255,0.25); }
+.note-input:focus { border-color:var(--pink); }
+
+/* Bottom bar */
+.bar {
+  position:fixed; bottom:0; left:0; right:0; z-index:10;
+  background:rgba(13,1,24,0.92); backdrop-filter:blur(24px);
+  border-top:1px solid rgba(255,255,255,0.08); padding:14px 16px;
+}
+.bar-inner { max-width:440px; margin:0 auto; display:flex; align-items:center; gap:12px; }
+.bar-text { flex:1; }
+.bar-count { font-size:12px; color:rgba(255,255,255,0.4); }
+.bar-price { font-size:24px; font-weight:900; background:linear-gradient(135deg,var(--pink),var(--orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.order-btn {
+  background:linear-gradient(135deg,var(--pink),var(--purple)); border:none; border-radius:16px;
+  color:white; font-family:'Prompt',sans-serif; font-size:16px; font-weight:700;
+  padding:14px 28px; cursor:pointer; transition:all 0.2s; white-space:nowrap;
+  box-shadow:0 6px 24px rgba(255,110,180,0.35);
+}
+.order-btn:active { transform:scale(0.96); }
+.order-btn:disabled { opacity:0.35; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* Toast */
+.toast {
+  position:fixed; top:24px; left:50%; transform:translateX(-50%) translateY(-90px);
+  background:linear-gradient(135deg,var(--pink),var(--purple)); color:white; font-weight:700; font-size:15px;
+  padding:14px 28px; border-radius:100px; box-shadow:0 8px 32px rgba(255,110,180,0.45);
+  transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); z-index:100; white-space:nowrap;
+}
+.toast.show { transform:translateX(-50%) translateY(0); }
+
+@keyframes slideDown { from{opacity:0;transform:translateY(-20px);} to{opacity:1;transform:translateY(0);} }
+@keyframes slideUp { from{opacity:0;transform:translateY(20px);} to{opacity:1;transform:translateY(0);} }
+</style>
+</head>
+<body>
+<div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+
+<div class="wrap">
+  <div class="header">
+    <svg class="logo-bowl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="100" cy="175" rx="70" ry="12" fill="rgba(0,0,0,0.25)"/>
+      <path d="M30 90 Q30 165 100 165 Q170 165 170 90 Z" fill="url(#hbG)"/>
+      <ellipse cx="100" cy="90" rx="70" ry="18" fill="url(#hrG)"/>
+      <ellipse cx="100" cy="90" rx="62" ry="14" fill="url(#hyG)"/>
+      <path d="M70 88 Q85 80 100 88 Q115 96 130 88" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.55"/>
+      <rect x="83" y="77" width="13" height="11" rx="4" fill="#fbbf24"/>
+      <rect x="83" y="77" width="13" height="5" rx="3" fill="#fcd34d" opacity="0.7"/>
+      <rect x="100" y="79" width="10" height="9" rx="3" fill="#f59e0b"/>
+      <rect x="113" y="77" width="10" height="10" rx="3" fill="#fbbf24"/>
+      <path d="M95 74 Q101 77 98 84 Q95 91 100 95" stroke="#fb923c" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.85"/>
+      <rect x="85" y="90" width="6" height="4" rx="2" fill="#d97706" transform="rotate(-10 88 92)"/>
+      <ellipse cx="79" cy="82" rx="6" ry="3" fill="#4ade80" transform="rotate(20 79 82)"/>
+      <text x="148" y="72" font-size="15">✨</text><text x="38" y="74" font-size="11">🌸</text>
+      <defs>
+        <linearGradient id="hbG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fce7f3"/><stop offset="100%" stop-color="#e9d5ff"/></linearGradient>
+        <linearGradient id="hrG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#ddd6fe"/></linearGradient>
+        <linearGradient id="hyG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff7f0"/><stop offset="100%" stop-color="#fce7f3"/></linearGradient>
+      </defs>
+    </svg>
+    <div class="shop-name">โยเกิร์ต</div>
+    <div class="shop-sub">เลือกรสชาติที่ชอบได้เลย ✨</div>
+  </div>
+
+  <p class="sec-title">เลือกรสชาติ</p>
+  <div class="flavors">
+    <div class="flavor-card" id="card-mango" onclick="toggleFlavor('mango')">
+      <span class="flavor-icon">🥭</span>
+      <div class="flavor-info"><div class="flavor-name">มะม่วง</div><div class="flavor-price">39 บาท / ถ้วย</div></div>
+      <div class="qty-picker">
+        <button class="qty-btn minus" onclick="changeQty(event,'mango',-1)">−</button>
+        <span class="qty-num" id="qty-mango">0</span>
+        <button class="qty-btn plus" onclick="changeQty(event,'mango',1)">+</button>
+      </div>
+    </div>
+    <div class="flavor-card" id="card-original" onclick="toggleFlavor('original')">
+      <span class="flavor-icon">🤍</span>
+      <div class="flavor-info"><div class="flavor-name">ออริจินอล</div><div class="flavor-price">39 บาท / ถ้วย</div></div>
+      <div class="qty-picker">
+        <button class="qty-btn minus" onclick="changeQty(event,'original',-1)">−</button>
+        <span class="qty-num" id="qty-original">0</span>
+        <button class="qty-btn plus" onclick="changeQty(event,'original',1)">+</button>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec-title">หมายเหตุ (ถ้ามี)</p>
+  <div class="note-wrap">
+    <textarea class="note-input" id="note" rows="2" placeholder="เช่น ไม่หวาน, ใส่ถุงแยก..."></textarea>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="bar-inner">
+    <div class="bar-text">
+      <div class="bar-count" id="bar-count">ยังไม่ได้เลือก</div>
+      <div class="bar-price" id="bar-price"></div>
+    </div>
+    <button class="order-btn" id="order-btn" onclick="placeOrder()" disabled>สั่งเลย 🛒</button>
+  </div>
+</div>
+<div class="toast" id="toast">✅ ส่งออเดอร์แล้ว!</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const app = initializeApp({
+  databaseURL: "https://yogurt-shop-default-rtdb.firebaseio.com"
+});
+const db = getDatabase(app);
+
+const PRICE = 39;
+const qty = { mango: 0, original: 0 };
+
+window.changeQty = (e, flavor, delta) => {
+  e.stopPropagation();
+  qty[flavor] = Math.max(0, qty[flavor] + delta);
+  document.getElementById('qty-' + flavor).textContent = qty[flavor];
+  updateCard(flavor); updateSummary();
+};
+window.toggleFlavor = (flavor) => {
+  if (qty[flavor] === 0) { qty[flavor] = 1; document.getElementById('qty-' + flavor).textContent = 1; }
+  updateCard(flavor); updateSummary();
+};
+function updateCard(flavor) {
+  document.getElementById('card-' + flavor).classList.toggle('selected', qty[flavor] > 0);
+}
+function updateSummary() {
+  const total = qty.mango + qty.original;
+  document.getElementById('bar-count').textContent = total > 0 ? `รวม ${total} ถ้วย` : 'ยังไม่ได้เลือก';
+  document.getElementById('bar-price').textContent = total > 0 ? `฿ ${total * PRICE}` : '';
+  document.getElementById('order-btn').disabled = total === 0;
+}
+
+window.placeOrder = async () => {
+  const total = qty.mango + qty.original;
+  if (total === 0) return;
+  const btn = document.getElementById('order-btn');
+  btn.disabled = true; btn.textContent = 'กำลังส่ง...';
+  try {
+    await push(ref(db, 'orders'), {
+      mango: qty.mango, original: qty.original,
+      total: total * PRICE,
+      note: document.getElementById('note').value.trim(),
+      time: new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
+      timestamp: Date.now(), status: 'new'
+    });
+    qty.mango = 0; qty.original = 0;
+    ['mango','original'].forEach(f => { document.getElementById('qty-'+f).textContent=0; document.getElementById('card-'+f).classList.remove('selected'); });
+    document.getElementById('note').value = '';
+    updateSummary();
+    const t = document.getElementById('toast'); t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2500);
+  } catch(e) {
+    alert('เกิดข้อผิดพลาด: ' + e.message);
+  }
+  btn.textContent = 'สั่งเลย 🛒';
+};
+</script>
+</body>
+</html>
