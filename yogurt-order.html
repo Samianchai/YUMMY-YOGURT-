@@ -27,7 +27,7 @@ body { font-family:'Prompt',sans-serif; background:#0d0118; color:white; min-hei
 .header { text-align:center; margin-bottom:36px; animation:slideDown 0.6s ease both; }
 .logo-bowl { display:block; margin:0 auto 16px; width:130px; height:130px; filter:drop-shadow(0 16px 40px rgba(255,110,180,0.45)); animation:bobble 3.5s ease-in-out infinite; }
 @keyframes bobble { 0%,100%{transform:translateY(0) rotate(-2deg);} 50%{transform:translateY(-12px) rotate(2deg);} }
-.shop-name { font-size:36px; font-weight:900; background:linear-gradient(135deg,#fff 30%,var(–pink)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.shop-name { font-size:36px; font-weight:900; color: var(–pink); }
 .shop-sub { font-size:13px; color:rgba(255,255,255,0.5); letter-spacing:2px; margin-top:6px; }
 
 .sec-title { font-size:12px; font-weight:700; color:rgba(255,255,255,0.4); letter-spacing:3px; text-transform:uppercase; margin-bottom:14px; }
@@ -82,7 +82,7 @@ border-top:1px solid rgba(255,255,255,0.08); padding:14px 16px;
 .bar-inner { max-width:440px; margin:0 auto; display:flex; align-items:center; gap:12px; }
 .bar-text { flex:1; }
 .bar-count { font-size:12px; color:rgba(255,255,255,0.4); }
-.bar-price { font-size:24px; font-weight:900; background:linear-gradient(135deg,var(–pink),var(–orange)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+.bar-price { font-size:24px; font-weight:900; color: var(–pink); }
 .order-btn {
 background:linear-gradient(135deg,var(–pink),var(–purple)); border:none; border-radius:16px;
 color:white; font-family:‘Prompt’,sans-serif; font-size:16px; font-weight:700;
@@ -157,6 +157,11 @@ transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); z-index:100; white-spa
     </div>
   </div>
 
+  <p class="sec-title">ชื่อของคุณ *</p>
+  <div class="note-wrap">
+    <input class="note-input" id="customer-name" type="text" placeholder="ใส่ชื่อ เช่น สมชาย, May..." autocomplete="off" style="height:52px; display:block; width:100%;">
+  </div>
+
   <p class="sec-title">หมายเหตุ (ถ้ามี)</p>
   <div class="note-wrap">
     <textarea class="note-input" id="note" rows="2" placeholder="เช่น ไม่หวาน, ใส่ถุงแยก..."></textarea>
@@ -212,7 +217,10 @@ window.placeOrder = async () => {
   const btn = document.getElementById('order-btn');
   btn.disabled = true; btn.textContent = 'กำลังส่ง...';
   try {
+    const nameVal = document.getElementById('customer-name').value.trim();
+    if (!nameVal) { alert('กรุณาใส่ชื่อก่อนสั่งนะครับ 😊'); btn.disabled=false; btn.textContent='สั่งเลย 🛒'; return; }
     await push(ref(db, 'orders'), {
+      name: nameVal,
       mango: qty.mango, original: qty.original,
       total: total * PRICE,
       note: document.getElementById('note').value.trim(),
@@ -225,6 +233,7 @@ window.placeOrder = async () => {
       document.getElementById('card-'+f).classList.remove('selected');
     });
     document.getElementById('note').value = '';
+    document.getElementById('customer-name').value = '';
     updateSummary();
     btn.textContent = 'สั่งเลย 🛒';
     const t = document.getElementById('toast');
