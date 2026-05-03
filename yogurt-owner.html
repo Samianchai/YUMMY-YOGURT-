@@ -165,7 +165,8 @@ function render() {
     let items = '';
     if (o.mango > 0) items += `<div class="item-chip">🥭 มะม่วง × ${o.mango}</div>`;
     if (o.original > 0) items += `<div class="item-chip">🤍 ออริจินอล × ${o.original}</div>`;
-    if (o.topping) items += `<div class="item-chip" style="border:1px solid rgba(251,191,36,0.4);background:rgba(251,191,36,0.08);">🍞 ${o.topping}</div>`;
+    if (o.toppingMango > 0) items += `<div class="item-chip" style="border:1px solid rgba(251,191,36,0.4);background:rgba(251,191,36,0.08);">🍞🥭 ขนมปังฯ มะม่วง × ${o.toppingMango}</div>`;
+    if (o.toppingOriginal > 0) items += `<div class="item-chip" style="border:1px solid rgba(251,191,36,0.4);background:rgba(251,191,36,0.08);">🍞🤍 ขนมปังฯ ออริจินอล × ${o.toppingOriginal}</div>`;
     return `
       <div class="order-card ${isNewOrder?'new-order':'done'} ${isNew&&i===0?'new-flash':''}">
         <div class="order-top">
