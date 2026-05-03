@@ -204,6 +204,7 @@ padding-bottom: 48px;
 .step:nth-child(4) { transition-delay: 0.3s; }
 .step:nth-child(5) { transition-delay: 0.4s; }
 .step:last-child { padding-bottom: 0; }
+.step:last-child .step-line { display: none; }
 
 /* Timeline line */
 .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
@@ -389,9 +390,9 @@ body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     <div class="menu-bowl-wrap">
       <svg class="menu-bowl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <ellipse cx="100" cy="172" rx="65" ry="10" fill="rgba(0,0,0,0.2)"/>
-        <path d="M35 90 Q35 162 100 162 Q165 162 165 90 Z" fill="url(#mbG)"/>
-        <ellipse cx="100" cy="90" rx="65" ry="16" fill="url(#mrG)"/>
-        <ellipse cx="100" cy="90" rx="57" ry="12" fill="url(#myG)"/>
+        <path d="M35 90 Q35 162 100 162 Q165 162 165 90 Z" fill="url(#mangoBowlG)"/>
+        <ellipse cx="100" cy="90" rx="65" ry="16" fill="url(#mangoRimG)"/>
+        <ellipse cx="100" cy="90" rx="57" ry="12" fill="url(#mangoYogG)"/>
         <path d="M72 88 Q86 80 100 88 Q114 96 128 88" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.5"/>
         <rect x="80" y="79" width="14" height="12" rx="4" fill="#fbbf24"/>
         <rect x="80" y="79" width="14" height="6" rx="3" fill="#fde68a" opacity="0.8"/>
@@ -400,9 +401,9 @@ body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         <path d="M94 76 Q100 79 97 86" stroke="#fb923c" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/>
         <ellipse cx="76" cy="84" rx="5" ry="3" fill="#4ade80" transform="rotate(20 76 84)"/>
         <defs>
-          <linearGradient id="mbG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fce7f3"/><stop offset="100%" stop-color="#e9d5ff"/></linearGradient>
-          <linearGradient id="mrG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#ddd6fe"/></linearGradient>
-          <linearGradient id="myG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="100%" stop-color="#fef3c7"/></linearGradient>
+          <linearGradient id="mangoBowlG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fce7f3"/><stop offset="100%" stop-color="#e9d5ff"/></linearGradient>
+          <linearGradient id="mangoRimG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#ddd6fe"/></linearGradient>
+          <linearGradient id="mangoYogG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fffbeb"/><stop offset="100%" stop-color="#fef3c7"/></linearGradient>
         </defs>
       </svg>
       <span class="menu-sparkle">✨</span>
@@ -430,9 +431,9 @@ body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
     <div class="menu-bowl-wrap">
       <svg class="menu-bowl" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
         <ellipse cx="100" cy="172" rx="65" ry="10" fill="rgba(0,0,0,0.2)"/>
-        <path d="M35 90 Q35 162 100 162 Q165 162 165 90 Z" fill="url(#obG)"/>
-        <ellipse cx="100" cy="90" rx="65" ry="16" fill="url(#orG)"/>
-        <ellipse cx="100" cy="90" rx="57" ry="12" fill="url(#oyG)"/>
+        <path d="M35 90 Q35 162 100 162 Q165 162 165 90 Z" fill="url(#origBowlG)"/>
+        <ellipse cx="100" cy="90" rx="65" ry="16" fill="url(#origRimG)"/>
+        <ellipse cx="100" cy="90" rx="57" ry="12" fill="url(#origYogG)"/>
         <path d="M68 88 Q84 79 100 88 Q116 97 132 88" stroke="white" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.6"/>
         <path d="M78 94 Q94 86 110 94" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.35"/>
         <path d="M110 76 Q117 81 114 88 Q111 95 116 100" stroke="#fbbf24" stroke-width="2.5" fill="none" stroke-linecap="round" opacity="0.8"/>
@@ -440,9 +441,9 @@ body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
         <rect x="94" y="93" width="5" height="3" rx="1.5" fill="#f59e0b" transform="rotate(10 96 94)"/>
         <ellipse cx="76" cy="83" rx="6" ry="3" fill="#4ade80" transform="rotate(15 76 83)"/>
         <defs>
-          <linearGradient id="obG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fce7f3"/><stop offset="100%" stop-color="#e9d5ff"/></linearGradient>
-          <linearGradient id="orG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#ddd6fe"/></linearGradient>
-          <linearGradient id="oyG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff7f0"/><stop offset="100%" stop-color="#fce7f3"/></linearGradient>
+          <linearGradient id="origBowlG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fce7f3"/><stop offset="100%" stop-color="#e9d5ff"/></linearGradient>
+          <linearGradient id="origRimG" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#fbcfe8"/><stop offset="100%" stop-color="#ddd6fe"/></linearGradient>
+          <linearGradient id="origYogG" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff7f0"/><stop offset="100%" stop-color="#fce7f3"/></linearGradient>
         </defs>
       </svg>
       <span class="menu-sparkle">🌸</span>
@@ -635,19 +636,21 @@ body { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 // ===== FLOATING PARTICLES =====
 const pc = document.getElementById('particles');
 const colors = ['#ff6eb4','#a855f7','#fb923c','#fbbf24','#4ade80'];
-for (let i = 0; i < 20; i++) {
-  const p = document.createElement('div');
-  p.className = 'p';
-  const size = Math.random() * 6 + 3;
-  p.style.cssText = `
-    width:${size}px; height:${size}px;
-    background:${colors[Math.floor(Math.random()*colors.length)]};
-    left:${Math.random()*100}%;
-    animation-duration:${Math.random()*15+10}s;
-    animation-delay:${Math.random()*10}s;
-    opacity:0.6;
-  `;
-  pc.appendChild(p);
+if (pc) {
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'p';
+    const size = Math.random() * 6 + 3;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*15+10}s;
+      animation-delay:${Math.random()*10}s;
+      opacity:0.6;
+    `;
+    pc.appendChild(p);
+  }
 }
 
 // ===== SCROLL REVEAL =====
@@ -661,17 +664,23 @@ const canvas = document.getElementById('bacteriaCanvas');
 const ctx = canvas.getContext('2d');
 
 function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width || canvas.parentElement.offsetWidth || 300;
+  canvas.height = rect.height || 180;
 }
-resizeCanvas();
+// Wait for layout to settle before first resize
+requestAnimationFrame(() => {
+  resizeCanvas();
+});
 window.addEventListener('resize', resizeCanvas);
 
 class Bacteria {
   constructor() { this.reset(); }
   reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
+    const w = canvas.width || 300;
+    const h = canvas.height || 180;
+    this.x = Math.random() * w;
+    this.y = Math.random() * h;
     this.size = Math.random() * 8 + 4;
     this.vx = (Math.random() - 0.5) * 1.2;
     this.vy = (Math.random() - 0.5) * 1.2;
@@ -685,7 +694,7 @@ class Bacteria {
     this.x += this.vx; this.y += this.vy;
     this.angle += this.angleSpeed;
     this.pulse += 0.05;
-    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+    if (this.x < 0 || this.x > (canvas.width || 300) || this.y < 0 || this.y > (canvas.height || 180)) this.reset();
   }
   draw() {
     const s = this.size + Math.sin(this.pulse) * 2;
