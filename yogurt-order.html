@@ -109,7 +109,7 @@ transition:transform 0.4s cubic-bezier(0.34,1.56,0.64,1); z-index:100; white-spa
 background:rgba(255,255,255,0.05); border:1.5px solid rgba(255,255,255,0.09);
 border-radius:22px; padding:16px 20px;
 display:flex; align-items:center; gap:14px;
-transition:all 0.25s ease; cursor:pointer;
+transition:all 0.25s ease;
 margin-bottom:14px;
 animation:slideUp 0.5s 0.25s ease both;
 }
@@ -118,19 +118,6 @@ animation:slideUp 0.5s 0.25s ease both;
 .topping-info { flex:1; }
 .topping-name { font-size:18px; font-weight:700; }
 .topping-price { font-size:13px; color:rgba(255,255,255,0.45); margin-top:2px; }
-.topping-toggle {
-width:52px; height:30px; border-radius:100px; border:none; cursor:pointer;
-transition:all 0.25s ease; position:relative; flex-shrink:0;
-background:rgba(255,255,255,0.15);
-}
-.topping-toggle.on { background:linear-gradient(135deg,#fbbf24,#fb923c); }
-.topping-toggle::after {
-content:’’; position:absolute; top:3px; left:3px;
-width:24px; height:24px; border-radius:50%; background:white;
-transition:transform 0.25s ease;
-box-shadow:0 2px 6px rgba(0,0,0,0.3);
-}
-.topping-toggle.on::after { transform:translateX(22px); }
 </style>
 
 </head>
@@ -185,14 +172,30 @@ box-shadow:0 2px 6px rgba(0,0,0,0.3);
     </div>
   </div>
 
-  <p class="sec-title">ท็อปปิ้ง (เพิ่ม +5 บาท)</p>
-  <div class="topping-card" id="topping-card" onclick="toggleTopping()">
-    <span class="topping-icon">🍞</span>
+  <p class="sec-title">🍞 ขนมปังคาราเมล (+ 5 บาท / ถ้วย)</p>
+  <div class="topping-card" id="topping-mango-card">
+    <span class="topping-icon">🥭</span>
     <div class="topping-info">
-      <div class="topping-name">ขนมปังคาราเมล</div>
-      <div class="topping-price">+ 5 บาท</div>
+      <div class="topping-name">มะม่วง</div>
+      <div class="topping-price">+ 5 บาท / ถ้วย</div>
     </div>
-    <button class="topping-toggle" id="topping-btn" onclick="event.stopPropagation();toggleTopping()"></button>
+    <div class="qty-picker">
+      <button class="qty-btn minus" onclick="changeTopping('mango',-1)">−</button>
+      <span class="qty-num" id="qty-topping-mango">0</span>
+      <button class="qty-btn plus" onclick="changeTopping('mango',1)">+</button>
+    </div>
+  </div>
+  <div class="topping-card" id="topping-original-card">
+    <span class="topping-icon">🤍</span>
+    <div class="topping-info">
+      <div class="topping-name">ออริจินอล</div>
+      <div class="topping-price">+ 5 บาท / ถ้วย</div>
+    </div>
+    <div class="qty-picker">
+      <button class="qty-btn minus" onclick="changeTopping('original',-1)">−</button>
+      <span class="qty-num" id="qty-topping-original">0</span>
+      <button class="qty-btn plus" onclick="changeTopping('original',1)">+</button>
+    </div>
   </div>
 
 ```
@@ -231,12 +234,12 @@ const db = getDatabase(app);
 
 const PRICE = 40;
 const qty = { mango: 0, original: 0 };
-let hasTopping = false;
+const topping = { mango: 0, original: 0 };
 
-window.toggleTopping = () => {
-  hasTopping = !hasTopping;
-  document.getElementById('topping-card').classList.toggle('selected', hasTopping);
-  document.getElementById('topping-btn').classList.toggle('on', hasTopping);
+window.changeTopping = (flavor, delta) => {
+  topping[flavor] = Math.min(qty[flavor], Math.max(0, topping[flavor] + delta));
+  document.getElementById('qty-topping-' + flavor).textContent = topping[flavor];
+  document.getElementById('topping-' + flavor + '-card').classList.toggle('selected', topping[flavor] > 0);
   updateSummary();
 };
 
@@ -255,10 +258,18 @@ function updateCard(flavor) {
 }
 function updateSummary() {
   const total = qty.mango + qty.original;
-  const toppingPrice = hasTopping ? 5 * total : 0;
-  const grand = total * PRICE + toppingPrice;
+  // Cap topping per flavor
+  ['mango','original'].forEach(f => {
+    if (topping[f] > qty[f]) {
+      topping[f] = qty[f];
+      document.getElementById('qty-topping-' + f).textContent = topping[f];
+      document.getElementById('topping-' + f + '-card').classList.toggle('selected', topping[f] > 0);
+    }
+  });
+  const totalTopping = topping.mango + topping.original;
+  const grand = total * PRICE + totalTopping * 5;
   let countText = total > 0 ? `รวม ${total} ถ้วย` : 'ยังไม่ได้เลือก';
-  if (hasTopping && total > 0) countText += ' + ขนมปังคาราเมล';
+  if (totalTopping > 0) countText += ` + ท็อปปิ้ง ${totalTopping} ถ้วย`;
   document.getElementById('bar-count').textContent = countText;
   document.getElementById('bar-price').textContent = total > 0 ? `฿ ${grand}` : '';
   document.getElementById('order-btn').disabled = total === 0;
@@ -272,12 +283,13 @@ window.placeOrder = async () => {
   try {
     const nameVal = document.getElementById('customer-name').value.trim();
     if (!nameVal) { alert('กรุณาใส่ชื่อก่อนสั่งนะครับ 😊'); btn.disabled=false; btn.textContent='สั่งเลย 🛒'; return; }
-    const toppingPrice = hasTopping ? 5 * total : 0;
+    const totalTopping = topping.mango + topping.original;
     await push(ref(db, 'orders'), {
       name: nameVal,
       mango: qty.mango, original: qty.original,
-      topping: hasTopping ? 'ขนมปังคาราเมล' : '',
-      total: total * PRICE + toppingPrice,
+      toppingMango: topping.mango,
+      toppingOriginal: topping.original,
+      total: total * PRICE + totalTopping * 5,
       note: document.getElementById('note').value.trim(),
       time: new Date().toLocaleTimeString('th-TH',{hour:'2-digit',minute:'2-digit',second:'2-digit'}),
       timestamp: Date.now(), status: 'new'
@@ -289,9 +301,11 @@ window.placeOrder = async () => {
     });
     document.getElementById('note').value = '';
     document.getElementById('customer-name').value = '';
-    hasTopping = false;
-    document.getElementById('topping-card').classList.remove('selected');
-    document.getElementById('topping-btn').classList.remove('on');
+    topping.mango = 0; topping.original = 0;
+    ['mango','original'].forEach(f => {
+      document.getElementById('qty-topping-' + f).textContent = 0;
+      document.getElementById('topping-' + f + '-card').classList.remove('selected');
+    });
     updateSummary();
     btn.textContent = 'สั่งเลย 🛒';
     const t = document.getElementById('toast');
